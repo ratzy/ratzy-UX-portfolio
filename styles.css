@@ -1,0 +1,219 @@
+/* ============================================================
+   Rathijit Adhikary — UX Portfolio 2026
+   Liquid-glass / dark mode / high-contrast monochrome
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  /* ---- Surfaces (cool near-black) ---- */
+  --bg-0: oklch(0.145 0.006 264);
+  --bg-1: oklch(0.175 0.007 264);
+  --bg-2: oklch(0.205 0.008 264);
+
+  /* ---- Glass ---- */
+  --glass-fill: rgba(255, 255, 255, 0.045);
+  --glass-fill-strong: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-strong: rgba(255, 255, 255, 0.18);
+  --glass-highlight: rgba(255, 255, 255, 0.22);
+
+  /* ---- Text ---- */
+  --tx-0: oklch(0.975 0.003 264);
+  --tx-1: oklch(0.78 0.005 264);
+  --tx-2: oklch(0.60 0.006 264);
+  --tx-3: oklch(0.46 0.006 264);
+
+  /* ---- Single restrained accent: cold luminous white-blue ---- */
+  --accent: oklch(0.88 0.045 248);
+  --accent-dim: oklch(0.72 0.05 248);
+  --accent-glow: oklch(0.88 0.045 248 / 0.35);
+
+  --radius-s: 12px;
+  --radius-m: 18px;
+  --radius-l: 28px;
+  --radius-xl: 40px;
+
+  --maxw: 1240px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  background: var(--bg-0);
+  color: var(--tx-0);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ---- Ambient background: drifting light pools + grain ---- */
+.ambient {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+.ambient .pool {
+  position: absolute; border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.5;
+}
+.ambient .pool.p1 {
+  width: 52vw; height: 52vw; top: -16vw; left: -10vw;
+  background: radial-gradient(circle, oklch(0.5 0.03 248 / 0.55), transparent 70%);
+  animation: drift1 26s var(--ease) infinite alternate;
+}
+.ambient .pool.p2 {
+  width: 46vw; height: 46vw; bottom: -18vw; right: -8vw;
+  background: radial-gradient(circle, oklch(0.42 0.02 286 / 0.5), transparent 70%);
+  animation: drift2 32s var(--ease) infinite alternate;
+}
+.ambient .pool.p3 {
+  width: 38vw; height: 38vw; top: 40%; left: 55%;
+  background: radial-gradient(circle, oklch(0.4 0.015 230 / 0.4), transparent 70%);
+  animation: drift3 30s var(--ease) infinite alternate;
+}
+@keyframes drift1 { to { transform: translate(8vw, 10vh) scale(1.12); } }
+@keyframes drift2 { to { transform: translate(-7vw, -8vh) scale(1.08); } }
+@keyframes drift3 { to { transform: translate(-10vw, 6vh) scale(1.15); } }
+
+.grain {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  opacity: 0.035; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .ambient .pool { animation: none !important; }
+}
+
+#root { position: relative; z-index: 2; }
+
+/* ============================================================
+   Glass primitives
+   ============================================================ */
+.glass {
+  position: relative;
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border-radius: var(--radius-l);
+  box-shadow:
+    0 1px 0 0 var(--glass-highlight) inset,
+    0 20px 50px -24px rgba(0,0,0,0.7);
+}
+/* specular top edge */
+.glass::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,0.10), transparent 32%);
+  -webkit-mask: linear-gradient(180deg, #000, transparent 40%);
+          mask: linear-gradient(180deg, #000, transparent 40%);
+  opacity: 0.7;
+}
+
+.container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+
+/* ---- Mono labels ---- */
+.mono {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--tx-2);
+}
+.mono-accent { color: var(--accent-dim); }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: 'Space Mono', monospace;
+  font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--tx-2);
+}
+.eyebrow::before {
+  content: ''; width: 26px; height: 1px; background: var(--accent-dim);
+}
+
+/* ============================================================
+   Reveal on scroll
+   ============================================================ */
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+/* Frozen-timeline / paused-rendering fallback: guarantee content is visible
+   even if CSS transitions never advance (added by a runtime watchdog). */
+.reveals-forced .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ============================================================
+   Buttons / tags
+   ============================================================ */
+.btn {
+  font-family: 'Space Grotesk', sans-serif;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 24px; border-radius: 100px;
+  font-size: 15px; font-weight: 500; letter-spacing: 0.01em;
+  border: 1px solid var(--glass-border-strong);
+  background: var(--glass-fill-strong);
+  color: var(--tx-0); cursor: pointer; text-decoration: none;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: all 0.4s var(--ease);
+}
+.btn:hover { background: rgba(255,255,255,0.14); border-color: var(--glass-highlight); transform: translateY(-2px); }
+.btn-primary {
+  background: var(--tx-0); color: var(--bg-0); border-color: transparent;
+  box-shadow: 0 0 0 0 var(--accent-glow);
+}
+.btn-primary:hover { background: #fff; box-shadow: 0 10px 40px -8px var(--accent-glow); }
+.btn .arrow { transition: transform 0.4s var(--ease); }
+.btn:hover .arrow { transform: translateX(4px); }
+
+.tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 11.5px; letter-spacing: 0.06em;
+  padding: 7px 13px; border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255,255,255,0.03);
+  color: var(--tx-1); white-space: nowrap;
+}
+
+/* ============================================================
+   Image placeholders (striped) — user drops real shots here
+   ============================================================ */
+.ph {
+  position: relative; width: 100%; border-radius: var(--radius-m);
+  overflow: hidden; border: 1px solid var(--glass-border);
+  background:
+    repeating-linear-gradient(135deg,
+      rgba(255,255,255,0.022) 0 14px,
+      rgba(255,255,255,0.05) 14px 28px),
+    var(--bg-1);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--tx-3);
+}
+.ph-label {
+  font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; text-align: center; padding: 20px;
+  color: var(--tx-2);
+}
+.ph-label .dot { display:inline-block; width:6px; height:6px; border-radius:50%; background: var(--accent-dim); margin-right: 9px; vertical-align: middle; }
+
+/* ============================================================
+   Section scaffolding
+   ============================================================ */
+.section { position: relative; padding: 128px 0; }
+.section-head { max-width: 760px; margin-bottom: 64px; }
+.section-head h2 {
+  font-size: clamp(34px, 5vw, 58px); font-weight: 500; letter-spacing: -0.025em;
+  line-height: 1.02; margin-top: 22px; text-wrap: balance;
+}
+.section-head p { color: var(--tx-1); font-size: 18px; margin-top: 22px; max-width: 620px; }
+
+::selection { background: var(--accent); color: var(--bg-0); }
+
+/* thin scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg-0); }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 10px; border: 2px solid var(--bg-0); }
